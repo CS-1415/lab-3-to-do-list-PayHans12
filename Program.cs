@@ -32,54 +32,61 @@ while (true)
             newTask.Description = Console.ReadLine();
             break;
         case "x":
-            while (true)
+            if (toDoList.Count() > 0)
             {
-                Console.Write("What is the ID of the task you wish to mark completed? ");
-                //Got a little ahead of my self here. I went to Chapter 35 to learn how to make this not fail if they enter something I dont want.
-                //I didn't want to make a huge complicated thing so I searched in the book for a solution.
-                try
+                while (true)
                 {
-                    id = int.Parse(Console.ReadLine());
-                    if (id <= toDoList.Count && id > 0)
+                    Console.Write("What is the ID of the task you wish to mark completed? ");
+                    //Got a little ahead of my self here. I went to Chapter 35 to learn how to make this not fail if they enter something I dont want.
+                    //I didn't want to make a huge complicated thing so I searched in the book for a solution.
+                    try
                     {
-                        break;
+                        id = int.Parse(Console.ReadLine());
+                        if (id <= toDoList.Count && id > 0)
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception) { }
+                }
+                foreach (Task item in toDoList)
+                {
+                    if (item.ID == id)
+                    {
+                        item.IsComplete = !item.IsComplete;
                     }
                 }
-                catch (Exception) { }
             }
 
-            foreach (Task item in toDoList)
-            {
-                if (item.ID == id)
-                {
-                    item.IsComplete = !item.IsComplete;
-                }
-            }
+
             break;
         case "i":
             id = -1;
-            while (true)
+            if (toDoList.Count() > 0)
             {
-                Console.Write("What is the ID of the task you wish to mark completed? ");
-                //Same thing over here
-                try
+                while (true)
                 {
-                    id = int.Parse(Console.ReadLine());
-                    if (id <= toDoList.Count && id > 0)
+                    Console.Write("What is the ID of the task you wish to mark completed? ");
+                    //Same thing over here
+                    try
                     {
-                        break;
+                        id = int.Parse(Console.ReadLine());
+                        if (id <= toDoList.Count && id > 0)
+                        {
+                            break;
+                        }
                     }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
-            }
 
-            foreach (Task item in toDoList)
-            {
-                if (item.ID == id)
+                foreach (Task item in toDoList)
                 {
-                    item.DislayDescription();
-                    Console.WriteLine("Press enter to Continue");
-                    Console.ReadLine();
+                    if (item.ID == id)
+                    {
+                        item.DislayDescription();
+                        Console.WriteLine("Press enter to Continue");
+                        Console.ReadLine();
+                    }
                 }
             }
             break;
