@@ -2,6 +2,10 @@
 //10 september 2025
 //To do list lab 3
 
+using System.Diagnostics;
+using System.Diagnostics.Tracing;
+using System.Dynamic;
+
 List<Task> toDoList = new List<Task>();
 int id = -1; //This is for checking the id value before marking complete or displaying the discription. 
 //its sent as -1 because it checks for values > 0 and <= the List count
@@ -16,13 +20,47 @@ while (true)
         item.DisplayTask();
     }
 
-    Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information.");
+    Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information. Press \"c\" to close.");
     switch (Console.ReadLine())
     {
         case "+":
             Task newTask = new Task();
+            while (true)
+            {
+                Console.WriteLine("What is the priority level of this task 1 - 5 (5 being I need to get this done asap");
+                try
+                {
+                    newTask.PriototyLevel = byte.Parse(Console.ReadLine());
+                    if (newTask.PriototyLevel > 0 && newTask.PriototyLevel <= 5)
+                    {
+                        if (toDoList.Count > 0)
+                        {
+                            for (int i = 0; i < toDoList.Count(); i++)
+                            {
+                                if (newTask.PriototyLevel >= toDoList[i].PriototyLevel)
+                                {
+                                    toDoList.Insert(i, newTask);
+                                    break;
+                                }
+                                else if (i == toDoList.Count() - 1)
+                                {
+                                    toDoList.Add(newTask);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            toDoList.Add(newTask);
+                        }
+                        break;
+                    }
+                }
+                catch
+                {
 
-            toDoList.Add(newTask);
+                }
+            }
             newTask.ID = toDoList.Count;
 
             Console.WriteLine("What is the title of the task?");
@@ -90,6 +128,8 @@ while (true)
                 }
             }
             break;
+        case "c":
+            return;
         default:
             break;
     }
@@ -102,12 +142,13 @@ class Task
     private string title;
     private string description;
     private bool isComplete = false;
+    private byte priototyLevel;
 
     public int ID { get => iD; set => iD = value; }
     public string Title { get => title; set => title = value; }
     public string Description { get => description; set => description = value; }
     public bool IsComplete { get => isComplete; set => isComplete = value; }
-
+    public byte PriototyLevel { get => priototyLevel; set => priototyLevel = value; }
     public void DisplayTask()
     {
         if (isComplete)
