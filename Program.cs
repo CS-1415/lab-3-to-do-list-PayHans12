@@ -3,13 +3,13 @@
 //To do list lab 3
 
 List<Task> toDoList = new List<Task>();
-int id = int.MaxValue; //This is for checking the id value before marking complete or displaying the discription. 
-//its sent as the ints max value to be greater than any reasonanbly possible task id
+int id = -1; //This is for checking the id value before marking complete or displaying the discription. 
+//its sent as -1 because it checks for values > 0 and <= the List count
 
 while (true)
 {
     Console.Clear();
-    Console.WriteLine("  id  tasks");
+    Console.WriteLine("    id   tasks");
     Console.WriteLine("-------------------------");
     foreach (Task item in toDoList)
     {
@@ -40,7 +40,7 @@ while (true)
                 try
                 {
                     id = int.Parse(Console.ReadLine());
-                    if (id <= toDoList.Count)
+                    if (id <= toDoList.Count && id > 0)
                     {
                         break;
                     }
@@ -52,12 +52,12 @@ while (true)
             {
                 if (item.ID == id)
                 {
-                    item.IsComplete = true;
+                    item.IsComplete = !item.IsComplete;
                 }
             }
             break;
         case "i":
-            id = int.MaxValue;
+            id = -1;
             while (true)
             {
                 Console.Write("What is the ID of the task you wish to mark completed? ");
@@ -65,7 +65,7 @@ while (true)
                 try
                 {
                     id = int.Parse(Console.ReadLine());
-                    if (id <= toDoList.Count)
+                    if (id <= toDoList.Count && id > 0)
                     {
                         break;
                     }
@@ -78,6 +78,8 @@ while (true)
                 if (item.ID == id)
                 {
                     item.DislayDescription();
+                    Console.WriteLine("Press enter to Continue");
+                    Console.ReadLine();
                 }
             }
             break;
@@ -89,18 +91,26 @@ while (true)
 
 class Task
 {
-    private int id;
+    private int iD;
     private string title;
     private string description;
     private bool isComplete = false;
-    public int ID { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public bool IsComplete { get; set; }
+
+    public int ID { get => iD; set => iD = value; }
+    public string Title { get => title; set => title = value; }
+    public string Description { get => description; set => description = value; }
+    public bool IsComplete { get => isComplete; set => isComplete = value; }
 
     public void DisplayTask()
     {
-        Console.WriteLine($"{id}    {title}");
+        if (isComplete)
+        {
+            Console.WriteLine($"[x] {iD}    {title}");
+        }
+        else
+        {
+            Console.WriteLine($"[ ] {iD}    {title}");
+        }
     }
 
     public void DislayDescription()
